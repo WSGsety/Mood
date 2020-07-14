@@ -1,4 +1,4 @@
-package com.internet.mind.utils;
+package com.internet.mind.util;
 
 
 import java.util.Random;
@@ -11,8 +11,9 @@ public class VerificationCode {
         String resCode = "";
         Random random = new Random();
         while (true) {
-            if (resCode.length() == 6)
+            if (resCode.length() == 6) {
                 break;
+            }
             int i = random.nextInt(codes.length);
             resCode += codes[i];
         }

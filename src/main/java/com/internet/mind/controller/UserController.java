@@ -4,14 +4,16 @@ import com.internet.mind.pojo.Code;
 import com.internet.mind.pojo.Message;
 import com.internet.mind.pojo.User;
 import com.internet.mind.service.UserService;
-import com.internet.mind.utils.VerificationCode;
+import com.internet.mind.util.VerificationCode;
 import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @CrossOrigin(origins = "*")
 @Controller
 @Api(tags = "用户操作")
@@ -77,10 +79,12 @@ public class UserController {
         return m;
     }
 
+    @ResponseBody
     @GetMapping("/findInfo")
     @ApiOperation("查询用户信息（包含兴趣爱好）")
     @ApiImplicitParam(name = "userId", value = "用户Id", paramType = "query", required = true)
     public User findInfo(int userId) {
+        log.info("调用接口 = {} 成功，message = {}", this.getClass().getName(), userId);
         return userService.findAllInfo(userId);
     }
 
@@ -170,7 +174,7 @@ public class UserController {
             e.setCode(112);
             e.setErrorMessage("新增关注成功");
         } else {
-            e.setCode(112);
+            e.setCode(113);
             e.setErrorMessage("新增关注失败");
         }
         return e;
@@ -184,17 +188,17 @@ public class UserController {
             @ApiImplicitParam(name = "followId", value = "关注人Id", paramType = "query", required = true)
     })
     @ApiResponses({
-            @ApiResponse(code = 114, message = "新增关注成功"),
-            @ApiResponse(code = 115, message = "新增关注失败")
+            @ApiResponse(code = 114, message = "取消关注成功"),
+            @ApiResponse(code = 115, message = "取消关注失败")
     })
     public Message delFollow(int userId, int followId) {
         Message e = new Message();
         int flag = userService.delFollow(userId, followId);
         if (flag == 1) {
-            e.setCode(112);
+            e.setCode(114);
             e.setErrorMessage("取消关注成功");
         } else {
-            e.setCode(112);
+            e.setCode(115);
             e.setErrorMessage("取消关注失败");
         }
         return e;
@@ -220,6 +224,16 @@ public class UserController {
     public List<User> findFollower(int userId) {
         List<User> follower = userService.findFollower(userId);
         return follower;
+    }
+
+    @ResponseBody
+    @GetMapping("/findUserByPhone")
+    @ApiOperation("根据手机号查询用户(返回用户Id)")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userPhone", value = "手机号", paramType = "query", required = true),
+    })
+    public User findUserByPhone(String userPhone) {
+        return userService.findUserByPhone(userPhone);
     }
 
 
