@@ -8,7 +8,7 @@ import java.util.Random;
 public class VerificationCode {
 
     public String getCode() {
-        char[] codes = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        char[] codes = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
         String resCode = "";
         Random random = new Random();
         while (true) {
