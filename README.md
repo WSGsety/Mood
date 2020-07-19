@@ -1,5 +1,5 @@
-# mind
-mindApp
+# Mood
+MoodApp
 
 竞赛项目
 
